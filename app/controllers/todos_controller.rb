@@ -33,7 +33,7 @@ class TodosController < ApplicationController
     todos_update = params.require(:todo).permit(:title, :completed)
     @todos.update_attributes(todos_update)
     respond_to do |f|
-      f.json {render :json => @todo, only: [:id, :title, :completed]}
+      f.json {render :json => @todo, only: [:id, :title, :completed], :status => 200 }
     end
   end
 end
