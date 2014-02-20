@@ -18,6 +18,12 @@ class TodosController < ApplicationController
 
   # Fill in destroy
   def destroy
+    id = params[:id]
+    @todos = Todo.find(id)
+    @todos.destroy
+    respond_to do |f|
+      f.json {render :json => {:status => 200} }
+    end
   end
 
   # Fill in update
