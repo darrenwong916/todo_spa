@@ -46,8 +46,8 @@ $(function(){
       create : { path : '/todos.json', method : 'post' },
 
       // An id must be added to the todos path
-      update : { path : '/todos/:id', method : 'patch' },
-      destroy : { path : '/todos/:id', method : 'delete' } 
+      update : { path : '/todos/', method : 'patch' },
+      destroy : { path : '/todos/', method : 'delete' } 
     };
     
     App.saveItem = function(item, callback){
@@ -70,7 +70,7 @@ $(function(){
       // DO SOMETHING HERE
       // NOTE: For the url, an id for the item must be added to the path
       $.ajax({
-        url : this.urls.update.path,
+        url : this.urls.update.path + item.id + '.json',
         type: this.urls.update.method,
         data : data}).done(callback);
     
@@ -80,7 +80,10 @@ $(function(){
     App.deleteItem = function(item, callback){
     	// DO SOMETHING HERE
       // NOTE: For the url, an id for the item must be added to the path
-      callback();
+      $.ajax({
+        url : this.urls.destroy.path + item,
+        type: this.urls.destroy.method,
+        }).done(callback); 
     };
     
    	App.models = todos;
@@ -162,6 +165,7 @@ $(function(){
           _this.use('#todos', 'todo').render(responseData[i]);
         }
       });
+    
     });
 
 });
