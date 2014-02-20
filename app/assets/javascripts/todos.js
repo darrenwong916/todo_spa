@@ -66,9 +66,15 @@ $(function(){
 
 
     App.updateItem = function(item, callback){
+      var data = { todo : item };
       // DO SOMETHING HERE
       // NOTE: For the url, an id for the item must be added to the path
-      callback();
+      $.ajax({
+        url : this.urls.update.path,
+        type: this.urls.update.method,
+        data : data}).done(callback);
+    
+      return this;
     };
 
     App.deleteItem = function(item, callback){
