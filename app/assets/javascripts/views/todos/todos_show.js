@@ -1,29 +1,54 @@
 SpaApp.Views.TodosShow = Backbone.View.extend({
-  id: 'todos',
+
+  className: function() {
+    if (this.model.completed) {
+      return 'done done-true';
+    } else {
+      return 'done';
+    }
+    
+  },
 
   template: HandlebarsTemplates['todos/show'],
 
   events: {
-        "click #removeTodo": "deleteOnClick"
+        "click #removeTodo": "delete",
+        "click input[type='checkbox']" : "updateTodo"
   },
 
   render: function() {
-    $(this.el).html(this.template());
-
-    _.each(this.collection, function (someTodo) {
-      var todoHTML = HandlebarsTemplates['todos/show'](someTodo);
-      this.$el.append(todoHTML);
-    }, this);
-
+    $(this.el).html(this.template(this.model));
     return this;
   },
 
-    delete: function(event) {
-    event.preventDefault();
-    var _this = this;
+  delete: function(event) {
+    console.log(this.model);  
+    var deleteID = this.model.id;
+      $.ajax({
+        type: 'delete',
+        context: this,
+        url: '/todos/' + deleteID
+      })
+        .done(function (data) {
+           console.log(this);
+          $(this.el).remove();
+        });
+  },
+
+  updateTodo: function(event) {
     console.log(this.model);
-    var getTodo = this.model;
-    console.log(getTodo);
+     var  completedModel = this.model;
+     completedModel.completed = !completedModel.completed;
+
+     $.ajax({
+          type: 'PATCH',
+          context: this,
+          url: '/todos/' + completedModel.id,
+          data: { todo : completedModel }
+
+     }).done(function(data) {
+      $(this.el).toggleClass('done-true');
+     });
   }
 
 });
