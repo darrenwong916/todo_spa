@@ -3,6 +3,7 @@ window.SpaApp = {
   Collections: {},
   Views: {},
   Routers: {},
+  
   initialize: function() {
     // attach X-CSRF-Token to all request headers
     $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -26,6 +27,11 @@ window.SpaApp = {
   }
 };
 
+  
+
+
 $(document).ready(function(){
   SpaApp.initialize();
 });
+
+
